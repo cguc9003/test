@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang = "ja-jp">
+<head>
+    <meta charset="UTF-8">
+    <title>diary</title>
+    
+    <style>
+        h1{font-size: 45px;
+        text-align: center;}
+        h2{
+            text-align: center;
+            font-size: 20px;
+            
+        }
+        h3{
+            text-align: justify;
+            font-size: 30px;
+            padding: 10.130px;
+            width: 191px;
+        }
+#global_navi {
+    width: 980px;
+    clear: both;
+    overflow: hidden;
+    margin: 16px auto;
+}
+#global_navi ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+}
+#global_navi ul li {
+    width: 195px;
+    float: left;
+    margin-right: 1px;
+    text-align: center;
+    
+}
+#page_navi {
+    width: 980px;
+    clear: both;
+    overflow: hidden;
+    margin: 16px auto;
+}
+#page_navi ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+}
+#page_navi ul li {
+    width: 50px;
+    float: left;
+    margin-right: 1px;
+    text-align: center;
+    
+}
+    </style>
+    
+</head>
+<body>
+    <h1><a  href = "{% url 'index'  %}">掲示板</a></h1>
+<h2>タグ:{{ thread_tag }}</h2>
+   
+
+<nav id="global_navi">
+    <ul>
+    <li>タグ検索</li>
+   <form action="" method="POST" > 
+        <li>{{ form }}
+        {% csrf_token %} </li>
+        
+        <li><button type="submit">検索</button></li>
+        
+   </form>
+
+    <li><a href = "{% url 'create'  %}" >すれたて</a>
+    </li>
+</ul>
+</nav>
+    <br /><br />
+    <h2>
+    {% for thread in threads.all %}
+    <a  href = "{% url 'detail' thread.id %}">{{ thread.title }}</a>
+    {{ thread.date }}
+        <br /><br />
+        
+        
+    {% endfor %}
+</h2>
+
+<nav id="page_navi">
+   
+
+
+
+    <ul class="pagination">
+        <!-- 前へ の部分 -->
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        {% endif %}
+    
+        <!-- 数字の部分 -->
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <li class="page-item active"><a class="page-link" href="#!">{{ num }}</a></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+        {% endfor %}
+    
+        <!-- 次へ の部分 -->
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        {% endif %}
+        
+    </ul>
+   
+
+</nav>
+
+
+ 
+</body>
+</html>

@@ -1,0 +1,30 @@
+version: '3'
+services:
+    web:
+        image: cguc9003/django
+        build: .
+        command: python3 manage.py runserver 0.0.0.0:8000
+        
+        ports:
+           - "8000:8000"
+        depends_on:
+           - db
+        networks: 
+            - twochproject
+    
+        
+    db:
+        image: cguc9003/postgres
+        ports: 
+           - "5432"    
+        environment:
+            - POSTGRES_DB=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        networks: 
+            - twochproject
+        
+networks: 
+    twochproject:
+volumes: 
+    twoch_db_volumes:
